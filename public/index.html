@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Titanium API</title>
+</head>
+
+<body>
+
+    <h1>Test de mon API</h1>
+
+    <button id="btnPost">Créer un produit</button>
+    <button id="btnPatch">Modifier le produit</button>
+    <button id="btnDelete">Supprimer le produit</button>
+
+    <h2>Réponse du serveur :</h2>
+
+    <pre id="result"></pre>
+
+    <script>
+
+        const result = document.getElementById("result");
+
+
+        // POST
+        document.getElementById("btnPost").addEventListener("click", async () => {
+
+            const response = await fetch("http://localhost:3000/api/products", {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    name: "Basket noire",
+                    price: 8500
+                })
+            });
+
+            const data = await response.json();
+
+            result.textContent = JSON.stringify(data, null, 2);
+        });
+
+
+        // PATCH
+        document.getElementById("btnPatch").addEventListener("click", async () => {
+
+            const response = await fetch("http://localhost:3000/api/products/1", {
+                method: "PATCH",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    
+                       "name": "Jean bleu",
+                       "price": 6500
+                })
+            });
+
+            const data = await response.json();
+
+            result.textContent = JSON.stringify(data, null, 2);
+        });
+
+
+        // DELETE
+        document.getElementById("btnDelete").addEventListener("click", async () => {
+
+            const response = await fetch("http://localhost:3000/api/products/abc", {
+                method: "DELETE"
+            });
+
+            result.textContent = "Status : " + response.status;
+        });
+
+    </script>
+
+</body>
+</html>
