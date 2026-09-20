@@ -33,9 +33,9 @@
                 },
 
                 body: JSON.stringify({
-                    name: "Basket noire",
-                    price: 8500
-                })
+                "name": "Basket rouge",
+                "price": 9000
+            })
             });
 
             const data = await response.json();
@@ -54,10 +54,8 @@
                     "Content-Type": "application/json"
                 },
 
-                body: JSON.stringify({
-                    
-                       "name": "Jean bleu",
-                       "price": 6500
+                body: JSON.stringify({       
+                    "price": 9500
                 })
             });
 
@@ -70,7 +68,7 @@
         // DELETE
         document.getElementById("btnDelete").addEventListener("click", async () => {
 
-            const response = await fetch("http://localhost:3000/api/products/abc", {
+            const response = await fetch("http://localhost:3000/api/products/6", {
                 method: "DELETE"
             });
 
