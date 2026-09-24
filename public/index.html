@@ -33,7 +33,7 @@
                 },
 
                 body: JSON.stringify({
-                "name": "T",
+                "name": "Veste Grise",
                 "price": 9000
             })
             });
@@ -47,7 +47,7 @@
         // PATCH
         document.getElementById("btnPatch").addEventListener("click", async () => {
 
-            const response = await fetch("http://localhost:3000/api/products/abc", {
+            const response = await fetch("http://localhost:3000/api/products/12", {
                 method: "PATCH",
 
                 headers: {
@@ -55,8 +55,7 @@
                 },
 
                 body: JSON.stringify({       
-                    "price": 4500,
-                    
+                    "price": 4500,                    
                 })
             });
 
@@ -69,7 +68,7 @@
         // DELETE
         document.getElementById("btnDelete").addEventListener("click", async () => {
 
-            const response = await fetch("http://localhost:3000/api/products/13", {
+            const response = await fetch("http://localhost:3000/api/products/12", {
                 method: "DELETE"
             });
 

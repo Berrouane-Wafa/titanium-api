@@ -1,98 +1,72 @@
-const db = require("../config/database");
+const dbPromise =  require("../config/database");
 
-const getAllProducts = () =>  new Promise((resolve, reject) => {
+const getAllProducts = async () => {
+    const db = await dbPromise;
     
-    db.query(
-        "SELECT * FROM products",
-        (err, results) => {
-
-            if (err) {
-               reject(err)
-               return;
-            }
-
-            resolve(results)
-        }
+    const [results] = await db.query(
+        "SELECT * FROM products"
     );
+    return results;
+};
 
-});
 
-
-const getProductById = (id) => new Promise((resolve, reject) => {
-        db.query(
+const getProductById =  async (id) => {
+    const db = await dbPromise;
+    const [results] = await db .query(
         "SELECT * FROM products WHERE id = ?",
-        [id],
-        (err, results) => {
+        [id]
+    )
 
-            if (err) {
-                reject(err)
-                return;
-            }
+    return results;
+    
+}
 
-            resolve(results)
-        }
-    );
-});
 
-const createProduct = (name, price) => new Promise((resolve, reject) => {
-    db.query(
-        "INSERT INTO products (name, price) VALUES (?, ?)",
-        [name, price],
-        (err, result) => {
+const createProduct = async (name,price) => {
+    db = await dbPromise;
+    const result = await db.query(
+            "INSERT INTO products (name,price) VALUES (? , ?)",
+            [name,price]
+    )
+    return result;
+        
 
-            if (err) {
-                reject(err)
-                return;
-            }
+    
+}
 
-            resolve(result)
-        }
-    );
-});
-
-const updateProduct = (id, name, price) =>  new Promise((resolve, reject) => {
-    let fields = [];
-    let values = [];
+const updateProduct = async (id,name,price) => {
+    const fields = [];
+    const values = [];
 
     if (name!==undefined) {
         fields.push("name = ?");
-        values.push(name);
+        values.push(name)
     }
-    if (price!=undefined) {
+    if (price!==undefined) {
         fields.push("price = ?");
-        values.push(price);
+        values.push(price)
     }
-    values.push(id);
+    values.push(id)
 
-    db.query(
-        `UPDATE products SET ${fields.join(", ")} WHERE id = ?`,
-        values,
-            (err, results) => {
-                    // gérer l'erreur
-                    if (err) {
-                        console.log(err);
-                        reject(err)
-                        return;
-                    }
-                    resolve(results)
-                }
-            );
-});
+    const db=await dbPromise;
 
-
-const deleteProduct =(id) => new Promise((resolve, reject) => {
-    db.query(
-        'DELETE FROM products WHERE id = ?',
-        [id], 
-        (err,result)=>{
-            if (err) {
-              reject(err)
-              return;  
-            }
-            resolve(result)
-        }
+    [result] = await db.query(
+         `UPDATE products SET ${fields.join(", ")} WHERE id = ?`,
+         values
     )
-});
+    return result;
+
+}
+
+const deleteProduct =async (id) => {
+    const db = await dbPromise;
+
+    const [result] = await db.query(
+        "DELETE FROM products WHERE id = ?",
+        id
+    )
+    return result;
+}
 
 module.exports = {
     getAllProducts, getProductById, createProduct, updateProduct,deleteProduct

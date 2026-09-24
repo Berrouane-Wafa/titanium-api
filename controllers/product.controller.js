@@ -30,6 +30,7 @@ const getProductById = async (req,res) => {
     try {
         const results = await productService.getProductById(id_prod);
     // . Vérifier si aucun produit n'a été trouvé
+
         if (results.length===0) {
                 return res.status(404).json({
                 message: "Aucun produit trouvé "
