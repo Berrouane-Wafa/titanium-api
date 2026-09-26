@@ -16,4 +16,13 @@ app.use(express.static("public"));
 
 app.use("/api/products", productRoutes);
 
+app.use((error, req, res, next) => {
+    console.error(error);
+
+    return res.status(500).json({
+        message: "Erreur interne du serveur"
+    });
+});
+
+
  app.listen(3000)

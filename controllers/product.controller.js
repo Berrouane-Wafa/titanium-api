@@ -1,25 +1,24 @@
 const { response } = require("express");
 const productService = require("../services/product.service");
 
-const getAllProducts = async (req,res)=>{
+const asyncHandler = require('../middlewares/asyncHandler');
 
-    try {
+const getAllProducts = asyncHandler( async (req,res)=>{
+        
+    // throw new Error("Test Error");
+    
         const  results = await productService.getAllProducts();
+
         return res.status(200).json({
             message : "Liste des produits",
             products : results})
 
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({
-            message : "Erreur lors de la récupération des produits",
-         })
-    }
-}
 
-const getProductById = async (req,res) => {
+})
+
+const getProductById = asyncHandler(async (req,res) => {
     const id_prod=parseInt(req.params.id)
-
+    
     // verifier que l'id prod est un nombre
     if(isNaN(id_prod)){
         return res.status(400).json({
@@ -27,7 +26,7 @@ const getProductById = async (req,res) => {
         })
     }
 
-    try {
+  
         const results = await productService.getProductById(id_prod);
     // . Vérifier si aucun produit n'a été trouvé
 
@@ -44,15 +43,11 @@ const getProductById = async (req,res) => {
         "id" : id_prod,
         "produit" : results[0]})
 
-    } catch (error) {
-        console.log(error)
+   
+})
 
-        return res.status(500).json({
-                message: "Erreur lors de la récupération de produit"})
-    }
-}
-
-const createProduct = async (req, res) => {
+const createProduct = asyncHandler(
+    async (req, res) => {
 
     const name = req.body.name;
     const price = req.body.price;
@@ -81,8 +76,7 @@ const createProduct = async (req, res) => {
 
 
         // . Insérer dans MySQL
-        
-        try {
+
             const result = await productService.createProduct(name.trim(),price);
             return res.status(201).json({
                 "message": "Produit crée",
@@ -92,21 +86,14 @@ const createProduct = async (req, res) => {
                     "price" : price
                 }
             });
-        } catch (error) {
-            console.log(error);
-            return res.status(500).json({
-                message : "Ereur lors d'insertion produit"
-            })
-            
-        }
-
-
-
 
 
 }
+)
 
-const updateProduct =async (req,res)=>{
+
+const updateProduct = asyncHandler(
+    async (req,res)=>{
 
     // récupérer et vérifier l'id
     const prod_id = parseInt(req.params.id)
@@ -150,7 +137,7 @@ const updateProduct =async (req,res)=>{
     }
 
     // UPDATE MySQL
-    try {
+
         const existingProduct = await productService.getProductById(prod_id)
         if (existingProduct.length === 0) {
             return res.status(404).json({
@@ -168,18 +155,14 @@ const updateProduct =async (req,res)=>{
                 product: results[0]
             });
 
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({
-            message : "Erreur lors de la modification du produit"
-        })
-    }
+   
 
 
   
 }
+)
 
-const deleteProduct =async (req, res) => {
+const deleteProduct = asyncHandler(async (req, res) => {
 
     // 1. récupérer l'id
     const id_prod=parseInt(req.params.id)
@@ -192,7 +175,6 @@ const deleteProduct =async (req, res) => {
         })
     }
     // DELETE MySQL
-    try {
             const result = await productService.deleteProduct(id_prod);
         
             if (result.affectedRows==0) {
@@ -201,17 +183,11 @@ const deleteProduct =async (req, res) => {
                 })
             }
             return res.status(204).send();
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({
-            message : "Erreur lors du supression du produit ! "
-        })
-        
-    }
+
   
     
 
-}
+})
 
 module.exports ={getAllProducts,getProductById,createProduct,updateProduct,deleteProduct};
 
