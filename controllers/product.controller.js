@@ -1,4 +1,5 @@
 const { response } = require("express");
+
 const productService = require("../services/product.service");
 
 const asyncHandler = require('../middlewares/asyncHandler');
@@ -18,16 +19,8 @@ const getAllProducts = asyncHandler( async (req,res)=>{
 
 const getProductById = asyncHandler(async (req,res) => {
     const id_prod=parseInt(req.params.id)
-    
-    // verifier que l'id prod est un nombre
-    if(isNaN(id_prod)){
-        return res.status(400).json({
-            "message" :"Le L'id "+req.params.id+" n'est pas valide "
-        })
-    }
-
   
-        const results = await productService.getProductById(id_prod);
+    const results = await productService.getProductById(id_prod);
     // . Vérifier si aucun produit n'a été trouvé
 
         if (results.length===0) {
@@ -52,29 +45,6 @@ const createProduct = asyncHandler(
     const name = req.body.name;
     const price = req.body.price;
 
-    //Vérifier que les champ sont disponibles
-    if(name === undefined || price === undefined){
-        return res.status(400).json({
-            "message" : "Champs manquants"
-        })
-    }
-
-    //Valider le nom 
-    if(typeof(name) !== "string" || name.trim().length <3){
-            return res.status(400).json({
-                "message" : "Le nom doit etre une chaine ayant au moins 3 caractères  "
-            })
-        }
-
-    //Valider le prix
-        if (typeof(price) !== "number" || price <=0) {
-            return res.status(400).json({
-                "message" : " Le prix est invalide"
-            })
-        }
-    
-
-
         // . Insérer dans MySQL
 
             const result = await productService.createProduct(name.trim(),price);
@@ -98,43 +68,10 @@ const updateProduct = asyncHandler(
     // récupérer et vérifier l'id
     const prod_id = parseInt(req.params.id)
 
-    //CHekch if the id is correct
-    if (isNaN(prod_id)) {
-        return res.status(400).json({
-            "message" : "Id "+ req.params.id +" invalde"
-        })
-    }
 
     // récupérer name et price
     const name = req.body.name
     const price = req.body.price
-
-    // vérifier qu'au moins un des deux est fourni
-    if(name == undefined && price == undefined){
-        return res.status(400).json({
-            "message" : "Aucune donnée à modifier"
-        })
-    }
-
-    // valider les champs fournis
-    //valider le nom
-    if (name !== undefined) {
-        if(typeof(name) !== "string" || name.trim() === ""){
-            return res.status(400).json({
-                "message" : "Le nom est invalide "
-            })
-        }
-        
-    }
-    
-    //Valider le prix
-    if (price !== undefined) {
-        if (typeof(price) !== "number" || price <=0) {
-            return res.status(400).json({
-                "message" : " Le prix est invalide"
-            })
-        }
-    }
 
     // UPDATE MySQL
 
@@ -167,13 +104,6 @@ const deleteProduct = asyncHandler(async (req, res) => {
     // 1. récupérer l'id
     const id_prod=parseInt(req.params.id)
 
-    // 2. vérifier que l'id est valide
-    if(isNaN(id_prod)){
-        return res.status(400).json({
-            "message" :"request mal formé",
-
-        })
-    }
     // DELETE MySQL
             const result = await productService.deleteProduct(id_prod);
         

@@ -33,8 +33,8 @@
                 },
 
                 body: JSON.stringify({
-                "name": "Veste Grise",
-                "price": 9000
+                "name": "Veste cuir",
+                "price": 5000
             })
             });
 
@@ -47,16 +47,14 @@
         // PATCH
         document.getElementById("btnPatch").addEventListener("click", async () => {
 
-            const response = await fetch("http://localhost:3000/api/products/21", {
+            const response = await fetch("http://localhost:3000/api/products/abc", {
                 method: "PATCH",
-
                 headers: {
                     "Content-Type": "application/json"
                 },
-
                 body: JSON.stringify({   
-                    "name" : "Veste en jean"  ,  
-                    "price": 4500,                    
+                    "name" : "Chemise classique"  ,  
+                    "price": 5600,                    
                 })
             });
 
@@ -69,7 +67,7 @@
         // DELETE
         document.getElementById("btnDelete").addEventListener("click", async () => {
 
-            const response = await fetch("http://localhost:3000/api/products/20", {
+            const response = await fetch("http://localhost:3000/api/products/abc", {
                 method: "DELETE"
             });
 
