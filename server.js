@@ -19,8 +19,10 @@ app.use("/api/products", productRoutes);
 app.use((error, req, res, next) => {
     console.error(error);
 
-    return res.status(500).json({
-        message: "Erreur interne du serveur"
+    const statusCode=error.statusCode || 500;
+
+    return res.status(statusCode).json({
+        message: error.message
     });
 });
 

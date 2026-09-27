@@ -3,8 +3,6 @@ const express = require("express");
 //spécialisée dans les routes des produits.
 const router = express.Router();
 
-const db = require("../config/database");
-
 const productController = require("../controllers/product.controller")
 
 const validateProduct = require("../middlewares/validationProduct");

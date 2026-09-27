@@ -3,6 +3,7 @@ const { response } = require("express");
 const productService = require("../services/product.service");
 
 const asyncHandler = require('../middlewares/asyncHandler');
+const AppError = require("../errors/AppError");
 
 const getAllProducts = asyncHandler( async (req,res)=>{
         
@@ -21,13 +22,11 @@ const getProductById = asyncHandler(async (req,res) => {
     const id_prod=parseInt(req.params.id)
   
     const results = await productService.getProductById(id_prod);
+    
     // . Vérifier si aucun produit n'a été trouvé
-
         if (results.length===0) {
-                return res.status(404).json({
-                message: "Aucun produit trouvé "
-                
-            });
+            throw new AppError("Aucun produit trouvé ",404);
+
         }
 
         //res^ponse
@@ -77,9 +76,8 @@ const updateProduct = asyncHandler(
 
         const existingProduct = await productService.getProductById(prod_id)
         if (existingProduct.length === 0) {
-            return res.status(404).json({
-            message: "Produit " + prod_id + " n'existe pas"
-            });
+            throw new AppError("Aucun produit trouvé",404);
+            
         }
 
         await productService.updateProduct(prod_id,name !== undefined ? name.trim():undefined,price,);
@@ -108,9 +106,8 @@ const deleteProduct = asyncHandler(async (req, res) => {
             const result = await productService.deleteProduct(id_prod);
         
             if (result.affectedRows==0) {
-                return res.status(404).json({
-                    meessage : "Produit  "+id_prod+"n'existe pas !"
-                })
+                throw new AppError("Aucun produit trouvé ",404);
+                
             }
             return res.status(204).send();
 
