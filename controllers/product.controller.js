@@ -1,4 +1,3 @@
-const { response } = require("express");
 
 const productService = require("../services/product.service");
 
@@ -6,9 +5,7 @@ const asyncHandler = require('../middlewares/asyncHandler');
 const AppError = require("../errors/AppError");
 
 const getAllProducts = asyncHandler( async (req,res)=>{
-        
-    // throw new Error("Test Error");
-    
+           
         const  results = await productService.getAllProducts();
 
         return res.status(200).json({

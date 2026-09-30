@@ -29,9 +29,7 @@ const createProduct = async (name,price) => {
             [name,price]
     )
     return result;
-        
-
-    
+            
 }
 
 const updateProduct = async (id,name,price) => {
