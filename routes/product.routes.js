@@ -18,6 +18,7 @@ router.get('/',productController.getAllProducts)
 //GET id
 router.get('/:id',validateId,productController.getProductById)
 
+router.get("/:id/images",validateId,productController.getProductImages);
 
 //POST
 router.post('/', validateProduct, productController.createProduct);

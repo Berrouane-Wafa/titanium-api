@@ -1,5 +1,6 @@
 const express = require('express');
 
+//Specialisé dans les route auth
 const router = express.Router();
 
 const authController = require('../controllers/auth.controller');

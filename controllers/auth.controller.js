@@ -55,6 +55,9 @@ const login = asyncHandler(async (req,res) => {
         throw new AppError("Email ou mot de passe incorrect",401);
     }
 
+    console.log(" result[0].id ",result[0].id);
+    console.log(" result[0].role ",result[0].role);
+
     const token = jwt.sign(
         {
             userId : result[0].id,
@@ -64,8 +67,9 @@ const login = asyncHandler(async (req,res) => {
         {
             expiresIn : process.env.JWT_EXPIRES_IN
         }
-
     );
+   
+    
     res.status(200).json({
         "message": "Connexion réussie",
         "token": token

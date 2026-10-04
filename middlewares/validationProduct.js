@@ -1,3 +1,5 @@
+const AppError = require("../errors/AppError");
+
 const validateProduct = (req, res, next) => {
     const name = req.body.name;
     const price = req.body.price;
@@ -5,24 +7,19 @@ const validateProduct = (req, res, next) => {
     
     //Vérifier que les champ sont disponibles
     if(name === undefined || price === undefined){
-        return res.status(400).json({
-            "message" : "Champs manquants"
-        })
+        throw new AppError("Champs manquants");
+        
     }
 
     // vérifier name
 if (typeof(name)!="string" || name.trim().length < 3) {
-    return res.status(400).json({
-        message : "Le nom doit etre une chaine ayant au moins 3 caractères  "
-
-    })
+    throw new AppError("Le nom doit etre une chaine ayant au moins 3 caractères  ",400);
+    
 }
     // vérifier price
 if (typeof(price)!="number" || price <= 0) {
-    return res.status(400).json({
-        message : "Le prix doit etre un nombre positif  "
+    throw new AppErrorError("Le prix doit etre un nombre positif  ",400);
 
-    })
 }
     // si tout est correct : « La requête peut continuer. »
     next();
