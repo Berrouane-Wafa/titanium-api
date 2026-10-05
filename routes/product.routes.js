@@ -11,6 +11,8 @@ const validateId = require("../middlewares/validateId");
 
 const authMiddleware = require('../middlewares/authMiddleware');
 const authorizeRoles = require('../middlewares/authorizeRoles');
+
+const upload = require('../middlewares/uploadImages');
 //GET
 router.get('/',productController.getAllProducts)
 
@@ -21,7 +23,7 @@ router.get('/:id',validateId,productController.getProductById)
 router.get("/:id/images",validateId,productController.getProductImages);
 
 //POST
-router.post('/', validateProduct, productController.createProduct);
+router.post('/',authMiddleware,authorizeRoles("admin"),upload.array("images", 5),validateProduct, productController.createProduct);
 
 //PATCH
 router.patch('/:id',validateId, validateProductUpdate ,productController.updateProduct)

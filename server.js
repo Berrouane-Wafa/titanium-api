@@ -2,6 +2,7 @@
 //parcque database.js utilise ces variable d'environnement 
 
 require("dotenv").config();
+const path = require("path");
 
 const express = require("express")
 
@@ -15,6 +16,9 @@ const authRoutes = require('./routes/auth.routes');
 app.use(express.json())
 
 app.use(express.static("public"));
+
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
 
 app.use("/api/products", productRoutes);
 

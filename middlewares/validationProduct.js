@@ -2,7 +2,7 @@ const AppError = require("../errors/AppError");
 
 const validateProduct = (req, res, next) => {
     const name = req.body.name;
-    const price = req.body.price;
+    const price = Number(req.body.price);
 
     
     //Vérifier que les champ sont disponibles
@@ -17,9 +17,8 @@ if (typeof(name)!="string" || name.trim().length < 3) {
     
 }
     // vérifier price
-if (typeof(price)!="number" || price <= 0) {
-    throw new AppErrorError("Le prix doit etre un nombre positif  ",400);
-
+if (isNaN(price) || price <= 0) {
+    throw new AppError("Le prix doit etre un nombre positif  ",400);
 }
     // si tout est correct : « La requête peut continuer. »
     next();

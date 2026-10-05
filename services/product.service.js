@@ -32,14 +32,26 @@ const getProductById =  async (id) => {
 
 
 const createProduct = async (name,price) => {
-    db = await dbPromise;
-    const result = await db.query(
+    const db = await dbPromise;
+    const [result] = await db.query(
             "INSERT INTO products (name,price) VALUES (? , ?)",
             [name,price]
     )
-    return result;
+    
+    return result.insertId;
             
 }
+const createProductImage = async (product_id, image_path) => {
+    const db = await dbPromise;
+
+    const [result] = await db.query(
+        `INSERT INTO product_images (product_id, image_path)
+        VALUES (?,?)`,
+        [product_id,image_path]
+    );
+
+    return result;
+};
 
 const updateProduct = async (id,name,price) => {
     const fields = [];
@@ -96,6 +108,7 @@ const getProductImages = async (product_id) => {
     return results;
 };
 module.exports = {
-    getAllProducts, getProductById, createProduct, updateProduct,deleteProduct, getProductsByIds,getProductImages
+    getAllProducts, getProductById, createProduct, updateProduct,deleteProduct, 
+    getProductsByIds,getProductImages,createProductImage
 };
 

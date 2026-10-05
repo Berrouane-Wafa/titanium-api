@@ -61,17 +61,25 @@ const getProductById = asyncHandler(async (req, res) => {
 
 const createProduct = asyncHandler(async (req, res) => {
   const name = req.body.name;
-  const price = req.body.price;
-
+  const price = Number(req.body.price);
+  const files = req.files || [];
+ 
   // . Insérer dans MySQL
 
   const result = await productService.createProduct(name.trim(), price);
+  for (const file of files) {
+    await productService.createProductImage(result, file.filename);
+  }
+
+  const images = await productService.getProductImages(result);
+
   return res.status(201).json({
     message: "Produit crée",
     product: {
-      id: result.insertId,
+      id: result,
       name: name.trim(),
       price: price,
+      images: images,
     },
   });
 });
@@ -82,7 +90,7 @@ const updateProduct = asyncHandler(async (req, res) => {
 
   // récupérer name et price
   const name = req.body.name;
-  const price = req.body.price;
+  const price =Number(req.body.price);
 
   // UPDATE MySQL
 
