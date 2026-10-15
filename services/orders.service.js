@@ -88,4 +88,15 @@ const getOrderItems = async (order_id) => {
     );
     return results;
 }
-module.exports = {createOrder,createOrderItem,startTransaction,getOrdersByUserId,  getOrderById, getOrderItems}
+
+const deleteOrder= async (order_id,user_id) => {
+    const db=await dbPromise;
+        const [results] = await db.query(
+            "DELETE FROM orders WHERE id = ? AND user_id=?",
+            [order_id,user_id]
+        )
+        return results;
+
+}
+module.exports = {createOrder,createOrderItem,startTransaction,getOrdersByUserId, 
+     getOrderById, getOrderItems,deleteOrder}

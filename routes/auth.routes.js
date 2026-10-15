@@ -7,16 +7,10 @@ const authController = require('../controllers/auth.controller');
 
 const validateRegister = require('../middlewares/validateRegister');
 
-const authMiddleware = require('../middlewares/authMiddleware');
+const authLimiter = require('../middlewares/authRateLimiter')
 
 router.post('/register',validateRegister, authController.register);
 
-router.post('/login', authController.login);
-
-router.get("/me", authMiddleware, (req, res) => {
-    return res.status(200).json({
-        user: req.user
-    });
-});
+router.post('/login',authLimiter ,authController.login);
 
 module.exports = router;

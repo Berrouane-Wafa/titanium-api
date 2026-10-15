@@ -16,4 +16,6 @@ router.get("/:id/items",authMiddleware,authorizeRoles("user"),validateId,orderCo
 );
 router.get('/:id',authMiddleware, authorizeRoles("user"), validateId,orderController.getOrderById)
 
+router.delete('/:id',authMiddleware,authorizeRoles("user"),validateId,orderController.deleteOrder)
+
 module.exports = router;

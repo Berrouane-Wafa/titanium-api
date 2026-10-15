@@ -118,6 +118,7 @@ const getOrderById = asyncHandler(async (req,res) => {
         throw new AppError("Aucune commande trouvée",404);
         
     }
+
     return res.status(200).json({
         message : "order demandé",
         "order_id" : id_order,
@@ -144,4 +145,17 @@ const getOrderItems = asyncHandler(async (req,res) => {
         order_items : results
     })
 })
-module.exports = {createOrder,getOrdersByUserId,getOrderById,getOrderItems}
+
+const deleteOrder = asyncHandler(async (req,res) => {
+    const order_id = parseInt(req.params.id);
+    const userId = req.user.userId;
+
+    //delete
+    const result = await orderService.deleteOrder(order_id,userId);
+    if (result.affectedRows == 0) {
+        throw new AppError("Aucune commande trouvé ", 404);
+    }
+    return res.status(204).send();
+
+})
+module.exports = {createOrder,getOrdersByUserId,getOrderById,getOrderItems,deleteOrder}

@@ -13,9 +13,6 @@ const register = asyncHandler(async (req,res) => {
     const email =req.body.email;
     const password = req.body.password;
 
-    console.log("Name : "+name);
-    console.log("Email : "+email);
-    console.log("Password : "+password);
 
     const result = await authService.findUserByEmail(email.trim());
 
@@ -45,18 +42,12 @@ const login = asyncHandler(async (req,res) => {
 
     const result = await authService.findUserByEmail(email.trim());
 
-    if (result.length === 0) {
-        throw new AppError("Email ou mot de passe incorrect",401);  
-    }
+  
 
-    const isValide = await bcrypt.compare(password,result[0].password);
-
-    if (!isValide) {
+    if (result.length === 0 || !(await bcrypt.compare(password,result[0].password))) {
         throw new AppError("Email ou mot de passe incorrect",401);
     }
 
-    console.log(" result[0].id ",result[0].id);
-    console.log(" result[0].role ",result[0].role);
 
     const token = jwt.sign(
         {

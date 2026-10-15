@@ -25,7 +25,7 @@ const authMiddleware = (req,res,next) => {
             token,
             process.env.JWT_SECRET
         );
-        console.log("Decoded : ",decoded);
+        // console.log("Decoded : ",decoded);
 
         //Attacher les information de l'utilisateur à la requete
         //pour que le conntroleur sache :La requête actuelle appartient à l'utilisateur 4, qui a le rôle user.
